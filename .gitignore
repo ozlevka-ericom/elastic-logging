@@ -1,0 +1,13 @@
+
+*.pyc
+.fuse*
+__pycache__
+
+#Idea
+.idea/
+.vscode/
+
+
+#General
+*.log
+logs/
