@@ -2,17 +2,16 @@ version: "2.1"
 
 services:
     master:
-        image: elasticsearch:5.2.0
+        image: elasticsearch:5.2.2
         environment:
-            ES_JAVA_OPTS: "-Xms2g -Xmx2g"
+            ES_JAVA_OPTS: "-Xms1g -Xmx1g"
         volumes:
-          - /home/ozlevka/data:/usr/share/elasticsearch/data
-          - /home/ozlevka/bigdisk/data/snapshots/backup:/snapshots
+          - /home/lev/data:/usr/share/elasticsearch/data
           - /etc/localtime:/etc/localtime:ro
         network_mode: host
-        command: "elasticsearch --E cluster.name=gce --E node.data=true --E node.master=true --E path.repo=/snapshots --E node.max_local_storage_nodes=6"
+        command: "elasticsearch --E cluster.name=gce --E node.data=true --E node.master=true --E node.max_local_storage_nodes=6"
     kibana:
-      image: kibana:5.2.0
+      image: kibana:5.2.2
       mem_limit: 512m
       volumes:
         - /etc/localtime:/etc/localtime:ro
@@ -21,19 +20,8 @@ services:
       depends_on:
         - master
     cerebro:
-      image: ozlevka/cerebro:0.5.0
+      image: ozlevka/cerebro:0.5.1
       mem_limit: 512m
       volumes:
         - /etc/localtime:/etc/localtime:ro
       network_mode: host
-    nginx:
-        image: ozlevka/nginx-kibana-cerebro
-        environment: 
-            USER: "ozlevka"
-            PASS: "riba_Kit"
-        volumes:
-            - /etc/localtime:/etc/localtime:ro
-        network_mode: host
-        depends_on:
-          - kibana
-          - cerebro
