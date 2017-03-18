@@ -1,27 +1,51 @@
-version: "2.1"
+version: "3"
 
 services:
-    master:
+    elastic:
         image: elasticsearch:5.2.2
         environment:
             ES_JAVA_OPTS: "-Xms1g -Xmx1g"
         volumes:
           - /home/lev/data:/usr/share/elasticsearch/data
           - /etc/localtime:/etc/localtime:ro
-        network_mode: host
+        networks:
+          - elastic-test
         command: "elasticsearch --E cluster.name=gce --E node.data=true --E node.master=true --E node.max_local_storage_nodes=6"
+        ports:
+          - "9200:9200"
     kibana:
       image: kibana:5.2.2
-      mem_limit: 512m
       volumes:
         - /etc/localtime:/etc/localtime:ro
-      command: "kibana -e http://localhost:9200"
-      network_mode: host
-      depends_on:
-        - master
+      command: kibana -e http://elastic:9200
+      networks:
+          - elastic-test
+      links:
+        - elastic
+      ports:
+        - "5601:5601"
+    logstash:
+      image: ozlevka/logstash-test
+      volumes:
+        - /etc/localtime:/etc/localtime:ro
+      networks:
+          - elastic-test
+      links:
+        - elastic
+      ports:
+        - "5000:5000"
+        
     cerebro:
       image: ozlevka/cerebro:0.5.1
-      mem_limit: 512m
       volumes:
         - /etc/localtime:/etc/localtime:ro
-      network_mode: host
+      networks:
+          - elastic-test
+      links:
+        - elastic
+      ports:
+        - "9000:9000"
+
+networks:
+  elastic-test:
+    driver: bridge

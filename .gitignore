@@ -11,3 +11,7 @@ __pycache__
 #General
 *.log
 logs/
+
+
+#node
+node_modules/

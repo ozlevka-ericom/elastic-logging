@@ -1,0 +1,12 @@
+{
+  "name": "test-docker-app",
+  "version": "0.0.1",
+  "dependencies": {
+    "bunyan": "^1.8.8"
+  },
+  "main": "index",
+  "scripts": {
+     "start": "./docker-run.sh",
+     "stop": "./docker-stop.sh"
+  }
+}
