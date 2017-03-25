@@ -10,9 +10,13 @@ services:
           - /etc/localtime:/etc/localtime:ro
         networks:
           - elastic-test
-        command: "elasticsearch --E cluster.name=logging-cluster --E node.data=true --E node.master=true --E node.max_local_storage_nodes=6"
+        command: "elasticsearch --E cluster.name=logging-cluster --E node.data=true --E network.host=_site_ --E node.master=true --E node.max_local_storage_nodes=6"
         ports:
           - "9200:9200"
+        ulimits:
+          nofile:
+            soft: 65536
+            hard: 65536
     elastic-node-01:
         image: elasticsearch:5.2.2
         environment:
@@ -22,9 +26,13 @@ services:
           - /etc/localtime:/etc/localtime:ro
         networks:
           - elastic-test
-        command: "elasticsearch --E cluster.name=logging-cluster --E node.data=true --E node.master=false --E discovery.zen.ping.unicast.hosts=elastic --E node.max_local_storage_nodes=6"
+        command: "elasticsearch --E cluster.name=logging-cluster --E node.data=true --E network.host=_site_ --E node.master=false --E discovery.zen.ping.unicast.hosts=elastic --E node.max_local_storage_nodes=6"
         links:
           - elastic
+        ulimits:
+          nofile:
+            soft: 65536
+            hard: 65536
     elastic-node-02:
         image: elasticsearch:5.2.2
         environment:
@@ -34,9 +42,13 @@ services:
           - /etc/localtime:/etc/localtime:ro
         networks:
           - elastic-test
-        command: "elasticsearch --E cluster.name=logging-cluster --E node.data=true --E node.master=false --E discovery.zen.ping.unicast.hosts=elastic --E node.max_local_storage_nodes=6"
+        command: "elasticsearch --E cluster.name=logging-cluster --E node.data=true --E network.host=_site_ --E node.master=false --E discovery.zen.ping.unicast.hosts=elastic --E node.max_local_storage_nodes=6"
         links:
-          - elastic        
+          - elastic
+        ulimits:
+          nofile:
+            soft: 65536
+            hard: 65536    
     kibana:
       image: kibana:5.2.2
       volumes:
