@@ -10,9 +10,33 @@ services:
           - /etc/localtime:/etc/localtime:ro
         networks:
           - elastic-test
-        command: "elasticsearch --E cluster.name=gce --E node.data=true --E node.master=true --E node.max_local_storage_nodes=6"
+        command: "elasticsearch --E cluster.name=logging-cluster --E node.data=true --E node.master=true --E node.max_local_storage_nodes=6"
         ports:
           - "9200:9200"
+    elastic-node-01:
+        image: elasticsearch:5.2.2
+        environment:
+            ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+        volumes:
+          - /home/lev/data:/usr/share/elasticsearch/data
+          - /etc/localtime:/etc/localtime:ro
+        networks:
+          - elastic-test
+        command: "elasticsearch --E cluster.name=logging-cluster --E node.data=true --E node.master=false --E discovery.zen.ping.unicast.hosts=elastic --E node.max_local_storage_nodes=6"
+        links:
+          - elastic
+    elastic-node-02:
+        image: elasticsearch:5.2.2
+        environment:
+            ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+        volumes:
+          - /home/lev/data:/usr/share/elasticsearch/data
+          - /etc/localtime:/etc/localtime:ro
+        networks:
+          - elastic-test
+        command: "elasticsearch --E cluster.name=logging-cluster --E node.data=true --E node.master=false --E discovery.zen.ping.unicast.hosts=elastic --E node.max_local_storage_nodes=6"
+        links:
+          - elastic        
     kibana:
       image: kibana:5.2.2
       volumes:
