@@ -27,6 +27,7 @@ services:
     logstash:
       image: ozlevka/logstash-test
       volumes:
+        - /home/lev/projects/elastic-logging/logstash:/app
         - /etc/localtime:/etc/localtime:ro
       networks:
           - elastic-test

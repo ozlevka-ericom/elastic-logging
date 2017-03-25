@@ -11,4 +11,9 @@ while [ ! $ELASTIC_READY ]; do
     sleep 1
 done
 
-docker run -d --name test-node --log-driver syslog --log-opt syslog-address=tcp://localhost:5000 ozlevka/test-node
+docker run -d \
+    --name test-node \
+    --log-driver syslog \
+    --log-opt syslog-address=tcp://localhost:5000 \
+    --log-opt syslog-facility=daemon \
+    ozlevka/test-node
