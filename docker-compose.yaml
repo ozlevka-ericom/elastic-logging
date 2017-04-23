@@ -2,7 +2,7 @@ version: "3"
 
 services:
     elastic:
-        image: elasticsearch:5.2.2
+        image: elasticsearch:5.3.0
         environment:
             ES_JAVA_OPTS: "-Xms1g -Xmx1g"
         volumes:
@@ -18,7 +18,7 @@ services:
             soft: 65536
             hard: 65536
     elastic-node-01:
-        image: elasticsearch:5.2.2
+        image: elasticsearch:5.3.0
         environment:
             ES_JAVA_OPTS: "-Xms1g -Xmx1g"
         volumes:
@@ -34,7 +34,7 @@ services:
             soft: 65536
             hard: 65536
     elastic-node-02:
-        image: elasticsearch:5.2.2
+        image: elasticsearch:5.3.0
         environment:
             ES_JAVA_OPTS: "-Xms1g -Xmx1g"
         volumes:
@@ -50,7 +50,7 @@ services:
             soft: 65536
             hard: 65536    
     kibana:
-      image: kibana:5.2.2
+      image: kibana:5.3.0
       volumes:
         - /etc/localtime:/etc/localtime:ro
       command: kibana -e http://elastic:9200
@@ -73,7 +73,7 @@ services:
         - "5000:5000"
         
     cerebro:
-      image: ozlevka/cerebro:0.6.3
+      image: ozlevka/cerebro:0.6.5
       volumes:
         - /etc/localtime:/etc/localtime:ro
       networks:
